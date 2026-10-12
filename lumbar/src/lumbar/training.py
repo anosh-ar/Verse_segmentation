@@ -1,14 +1,18 @@
 """Part B: training data, patch sampling and loss.
 
 Which cases we train on (choose_training_cases)
-  All TotalSegmentator v3 *train* crops from step 2, except
+  All crops from step 2 of the training source (this project: the VerSe19
+  *training* set; the original project: TotalSegmentator v3 train), except
   - NO_LUMBAR: no L1-L5 at all (thorax-only or pelvis-only crops),
   - FRAGMENT: a lumbar level is only a scrap under 2 ml (thin slivers at the
-    edge of the scan; the label is not a usable example of that vertebra).
+    edge of the scan; the label is not a usable example of that vertebra),
+  - TRANSITIONAL_L6 / TRANSITIONAL_T13: the network has no class for a sixth lumbar
+    or a thirteenth thoracic vertebra (VerSe only; never in TotalSegmentator).
   Cut-off vertebrae (TRUNCATED) and metal are kept: real scans have them too.
-  The official test split is never touched. Because v3 has no validation split,
-  10 % of the chosen cases (fixed random seed) are held out to pick the best
-  checkpoint.
+  The test sets are never touched. 10 % of the *patients* (fixed random seed) are
+  held out to pick the best checkpoint; all scans of one patient stay on the same
+  side (VerSe has patients scanned in several pieces). For TotalSegmentator every
+  patient has one scan, so this is the same as holding out 10 % of the scans.
 
 Patches (sample_patch)
   The crops are small (median 86 x 82 x 152 voxels at 2 mm, about 2.4x more voxels
@@ -35,14 +39,14 @@ import torch
 import torch.nn.functional as F
 
 from .labels import NUM_TRAIN_CLASSES, TARGET_IDS
-from .sources import QC_REPORTS_DIR, preprocessed_folder
+from .sources import QC_REPORTS_DIR, TRAINING_SOURCE, TRAINING_SPACING, preprocessed_folder
 
-EXCLUDED_FLAGS = ("NO_LUMBAR", "FRAGMENT")
+EXCLUDED_FLAGS = ("NO_LUMBAR", "FRAGMENT", "TRANSITIONAL_L6", "TRANSITIONAL_T13")
 VALIDATION_FRACTION = 0.10
 FOREGROUND_PATCH_PROBABILITY = 2 / 3
 
 
-def choose_training_cases(source: str = "totalseg_v3_train", spacing: float = 2.0, seed: int = 0,
+def choose_training_cases(source: str = TRAINING_SOURCE, spacing: float = TRAINING_SPACING, seed: int = 0,
                           same_cases_as=None):
     """(training case ids, validation case ids, table of every case with the reason
     it was kept or excluded).
@@ -69,14 +73,16 @@ def choose_training_cases(source: str = "totalseg_v3_train", spacing: float = 2.
     for f in EXCLUDED_FLAGS:
         hit = (t["use"] == "train") & t["flags"].str.split().map(lambda fl, f=f: f in fl)
         t.loc[hit, "use"] = f"excluded: {f}"
-    chosen = t.loc[t["use"] == "train", "case_id"].sort_values().to_numpy()
+    chosen = t.loc[t["use"] == "train"]
+    patients = np.sort(chosen["subject_id"].unique())
     rng = np.random.default_rng(seed)
-    val = set(rng.choice(chosen, size=int(round(len(chosen) * VALIDATION_FRACTION)), replace=False))
+    val_patients = set(rng.choice(patients, size=int(round(len(patients) * VALIDATION_FRACTION)), replace=False))
+    val = set(chosen.loc[chosen["subject_id"].isin(val_patients), "case_id"])
     t.loc[t["case_id"].isin(val), "use"] = "validation"
-    return sorted(set(chosen) - val), sorted(val), t
+    return sorted(set(chosen["case_id"]) - val), sorted(val), t
 
 
-def load_cases_into_memory(case_ids, source: str = "totalseg_v3_train", spacing: float = 2.0) -> dict:
+def load_cases_into_memory(case_ids, source: str = TRAINING_SOURCE, spacing: float = TRAINING_SPACING) -> dict:
     """{case_id: (image float16, label uint8)} for the given preprocessed cases."""
     folder = preprocessed_folder(source, spacing, "lumbar")
     out = {}

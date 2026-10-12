@@ -1,4 +1,4 @@
-"""Step 4 (Part B): train the 3D segmentation network on TotalSegmentator v3 train.
+"""Step 4 (Part B): train the 3D segmentation network (this project: on the VerSe19 training set).
 
 What it does
   1. chooses the training cases from step 2's crops (lumbar/training.py says which
@@ -14,22 +14,20 @@ What it does
   4. stops after --steps, or earlier when --max-hours is reached (the best
      checkpoint so far is then the result: the assignment allows a short run)
 
-Voxel size (--spacing, default 2 mm): the patch is fixed in centimetres
-(19.2 x 19.2 x 32 cm, lumbar/network.py) and converted to voxels; the step-2 folder,
-run folder and weights file carry the voxel size in their names.
+Training data (--source, default verse19_training) and voxel size (--spacing, default
+1 mm): the patch is fixed in centimetres (19.2 x 19.2 x 32 cm, lumbar/network.py) and
+converted to voxels (1 mm: 192 x 192 x 320; only batch 1 fits on a 24 GB GPU); the
+step-2 folder, run folder and weights file carry source and voxel size in their names.
 
 Output
-  lumbar/weights/lumbar_vertebrae_resenc_unet.pt       best checkpoint at 2 mm (shipped with the code)
-  lumbar/weights/lumbar_vertebrae_resenc_unet_<s>mm.pt best checkpoint at another voxel size <s>
+  lumbar/weights/lumbar_vertebrae_resenc_unet_<source>_<s>mm.pt   best checkpoint (shipped with the code)
   outputs/training/<run>/last_checkpoint.pt            to resume (--resume)
   outputs/training/<run>/training_log.csv              loss per 100 steps, validation Dice
   outputs/training/<run>/training_cases.csv            every case: train / validation / excluded + why
-  where <run> defaults to resenc_m_<s>mm, e.g. resenc_m_2mm, resenc_m_1.5mm.
+  where <run> defaults to resenc_m_<source>_<s>mm, e.g. resenc_m_verse19_training_1mm.
 
-    python scripts/04_train_lumbar_segmentation_model.py
+    python scripts/04_train_lumbar_segmentation_model.py --batch-size 1 --max-hours 8
     python scripts/04_train_lumbar_segmentation_model.py --steps 200 --validate-every 100 --run smoke_test
-    python scripts/04_train_lumbar_segmentation_model.py --spacing 1.5 --batch-size 3 \\
-        --same-cases-as ../outputs/training/resenc_m_1.5mm/training_cases.csv
 """
 
 import argparse
@@ -46,7 +44,7 @@ from lumbar.inference import predict_labels_on_model_grid
 from lumbar.labels import CANONICAL, TARGET_IDS
 from lumbar.network import NETWORK_SETTINGS, build_lumbar_segmentation_network, patch_size_for_spacing
 from lumbar.preprocess import HU_WINDOW, TARGET_SPACING
-from lumbar.sources import PROJECT_ROOT, weights_file_for_spacing
+from lumbar.sources import PROJECT_ROOT, TRAINING_SOURCE, weights_file_for
 from lumbar.training import (choose_training_cases, dice_per_level, dice_plus_cross_entropy,
                              load_cases_into_memory, sample_patch)
 
@@ -80,7 +78,7 @@ def validate(net, val_data: dict, patch_size, device) -> dict:
     net.eval()
     per_level = {c: [] for c in TARGET_IDS}
     for image, label in val_data.values():
-        pred = predict_labels_on_model_grid(net, image.astype(np.float32), patch_size, device, batch_size=2)
+        pred = predict_labels_on_model_grid(net, image.astype(np.float32), patch_size, device, batch_size=1)
         for c, d in dice_per_level(pred, label).items():
             per_level[c].append(d)
     net.train()
@@ -103,15 +101,16 @@ def save_checkpoint(path, net, opt, scaler, step, best, spacing, patch_size, ext
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--source", default=TRAINING_SOURCE, help="training data (step 2 must have run on it)")
     ap.add_argument("--spacing", type=float, default=TARGET_SPACING, help="voxel size in mm; step 2 must have run with it")
     ap.add_argument("--steps", type=int, default=11000, help="planned training steps (sets the learning-rate schedule)")
     ap.add_argument("--batch-size", type=int, default=3,
-                    help="patches per step (RTX 3090: 8 at 2 mm uses ~16.5 GB, 3 at 1.5 mm ~15.5 GB)")
+                    help="patches per step (RTX 3090: 8 at 2 mm ~16.5 GB, 3 at 1.5 mm ~15.5 GB, 1 at 1 mm ~16.5 GB)")
     ap.add_argument("--max-hours", type=float, default=3.0, help="stop when this much time has passed")
     ap.add_argument("--validate-every", type=int, default=1000)
     ap.add_argument("--learning-rate", type=float, default=0.01)
-    ap.add_argument("--run", help="name of the folder in outputs/training/ (default resenc_m_<spacing>mm)")
-    ap.add_argument("--weights-out", help="where the best checkpoint goes (default: named after the voxel size)")
+    ap.add_argument("--run", help="name of the folder in outputs/training/ (default resenc_m_<source>_<spacing>mm)")
+    ap.add_argument("--weights-out", help="where the best checkpoint goes (default: named after source and voxel size)")
     ap.add_argument("--same-cases-as", help="training_cases.csv of an earlier run: reuse its exact train/validation split")
     ap.add_argument("--overwrite-weights", action="store_true", help="allow replacing an existing weights file")
     ap.add_argument("--resume", action="store_true", help="continue from the run's last checkpoint")
@@ -120,23 +119,23 @@ def main():
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     patch_size = patch_size_for_spacing(args.spacing)
-    run_dir = TRAINING_RUNS_DIR / (args.run or f"resenc_m_{args.spacing:g}mm")
+    run_dir = TRAINING_RUNS_DIR / (args.run or f"resenc_m_{args.source}_{args.spacing:g}mm")
     run_dir.mkdir(parents=True, exist_ok=True)
-    weights_out = Path(args.weights_out) if args.weights_out else weights_file_for_spacing(args.spacing)
+    weights_out = Path(args.weights_out) if args.weights_out else weights_file_for(args.source, args.spacing)
     if weights_out.exists() and not (args.resume or args.overwrite_weights):
         raise SystemExit(f"{weights_out} already exists (a trained model). Use --weights-out <new file>, "
                          "or --overwrite-weights if you really want to replace it.")
     weights_out.parent.mkdir(parents=True, exist_ok=True)
     torch.manual_seed(args.seed)
 
-    train_ids, val_ids, table = choose_training_cases(spacing=args.spacing, seed=args.seed,
+    train_ids, val_ids, table = choose_training_cases(source=args.source, spacing=args.spacing, seed=args.seed,
                                                       same_cases_as=args.same_cases_as)
     table.to_csv(run_dir / "training_cases.csv", index=False)
     print(f"[train] {len(train_ids)} training cases, {len(val_ids)} validation cases; "
           f"excluded: {table['use'].str.startswith('excluded').sum()} ({table['use'].value_counts().to_dict()})"
           + (f"; split reused from {args.same_cases_as}" if args.same_cases_as else ""))
-    train_data = load_cases_into_memory(train_ids, spacing=args.spacing)
-    val_data = load_cases_into_memory(val_ids, spacing=args.spacing)
+    train_data = load_cases_into_memory(train_ids, source=args.source, spacing=args.spacing)
+    val_data = load_cases_into_memory(val_ids, source=args.source, spacing=args.spacing)
 
     net = build_lumbar_segmentation_network().to(device)
     opt = torch.optim.SGD(net.parameters(), lr=args.learning_rate, momentum=0.99, nesterov=True, weight_decay=3e-5)

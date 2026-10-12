@@ -53,4 +53,4 @@ else
 fi
 
 "$PY" "$HERE/scripts/05_predict_lumbar_vertebrae.py" "$1" "$2" \
-    --weights "$HERE/weights/lumbar_vertebrae_resenc_unet_1.5mm.pt" --device cpu
+    --weights "$HERE/weights/lumbar_vertebrae_resenc_unet_verse19_training_1mm.pt" --device cpu

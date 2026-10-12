@@ -62,7 +62,7 @@ def preprocess_and_save_case(case, out_dir, spacing, crop, overwrite):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--source", nargs="+", help="default: every downloaded source")
-    ap.add_argument("--spacing", type=float, default=TARGET_SPACING, help="voxel size in mm (default 2)")
+    ap.add_argument("--spacing", type=float, default=TARGET_SPACING, help="voxel size in mm (default 1, this project's training voxel size)")
     ap.add_argument("--crop", choices=["lumbar", "none"], default="lumbar",
                     help="'none' keeps the whole scan (written to a separate *_full_image folder)")
     ap.add_argument("--workers", type=int, default=3, help="parallel processes; each holds one full CT in memory")
