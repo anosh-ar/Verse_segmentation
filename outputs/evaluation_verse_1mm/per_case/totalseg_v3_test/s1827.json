@@ -1,0 +1,98 @@
+{
+ "case_id": "s1827",
+ "source": "totalseg_v3_test",
+ "subject_id": "s1827",
+ "flags": "MASK_OVERLAP TRUNCATED MULTI_CC FRAGMENT",
+ "gt_has_L6": false,
+ "gt_has_T13": false,
+ "levels": {
+  "L1": {
+   "gt_ml": 0.5,
+   "pred_ml": 8.85,
+   "dice": 0.0,
+   "dice_if_pred_one_level_up": 0.0,
+   "dice_if_pred_one_level_down": 0.0,
+   "dice_ceiling": 1.0,
+   "truncated": true,
+   "fragment": true
+  }
+ },
+ "false_positive_levels": [
+  "L2",
+  "L3",
+  "L4",
+  "L5"
+ ],
+ "centroids": {
+  "L1": {
+   "pred_body": [
+    91.82,
+    91.09,
+    1308.78
+   ],
+   "gt_body": [
+    5.02,
+    85.32,
+    1149.49
+   ],
+   "gt_whole": [
+    5.02,
+    85.32,
+    1149.49
+   ],
+   "verse_point": null,
+   "pred_method": "whole_vertebra_fallback",
+   "gt_method": "whole_vertebra_fallback"
+  },
+  "L2": {
+   "pred_body": [
+    88.96,
+    79.16,
+    1302.59
+   ],
+   "gt_body": null,
+   "gt_whole": null,
+   "verse_point": null,
+   "pred_method": "whole_vertebra_fallback",
+   "gt_method": null
+  },
+  "L3": {
+   "pred_body": [
+    80.92,
+    81.14,
+    1268.49
+   ],
+   "gt_body": null,
+   "gt_whole": null,
+   "verse_point": null,
+   "pred_method": "whole_vertebra_fallback",
+   "gt_method": null
+  },
+  "L4": {
+   "pred_body": [
+    -74.69,
+    75.11,
+    1307.85
+   ],
+   "gt_body": null,
+   "gt_whole": null,
+   "verse_point": null,
+   "pred_method": "whole_vertebra_fallback",
+   "gt_method": null
+  },
+  "L5": {
+   "pred_body": [
+    10.45,
+    70.54,
+    1203.6
+   ],
+   "gt_body": null,
+   "gt_whole": null,
+   "verse_point": null,
+   "pred_method": "whole_vertebra_fallback",
+   "gt_method": null
+  }
+ },
+ "seconds": 6.8,
+ "model_spacing_mm": 1.0
+}

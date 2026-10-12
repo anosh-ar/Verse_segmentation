@@ -1,0 +1,115 @@
+{
+ "case_id": "s1593",
+ "source": "totalseg_v3_test",
+ "subject_id": "s1593",
+ "flags": "MULTI_CC FRAGMENT",
+ "gt_has_L6": false,
+ "gt_has_T13": false,
+ "levels": {
+  "L2": {
+   "gt_ml": 1.05,
+   "pred_ml": 12.33,
+   "dice": 0.0,
+   "dice_if_pred_one_level_up": 0.07082235879426398,
+   "dice_if_pred_one_level_down": 0.0,
+   "dice_ceiling": 1.0,
+   "truncated": false,
+   "fragment": true
+  },
+  "L3": {
+   "gt_ml": 1.89,
+   "pred_ml": 44.08,
+   "dice": 0.0,
+   "dice_if_pred_one_level_up": 0.0,
+   "dice_if_pred_one_level_down": 0.0,
+   "dice_ceiling": 1.0,
+   "truncated": false,
+   "fragment": true
+  }
+ },
+ "false_positive_levels": [
+  "L1",
+  "L4",
+  "L5"
+ ],
+ "centroids": {
+  "L1": {
+   "pred_body": [
+    -2.48,
+    -51.38,
+    -231.58
+   ],
+   "gt_body": null,
+   "gt_whole": null,
+   "verse_point": null,
+   "pred_method": "whole_vertebra_fallback",
+   "gt_method": null
+  },
+  "L2": {
+   "pred_body": [
+    -29.45,
+    -32.88,
+    17.72
+   ],
+   "gt_body": [
+    -0.03,
+    -68.46,
+    -250.27
+   ],
+   "gt_whole": [
+    -0.03,
+    -68.46,
+    -250.27
+   ],
+   "verse_point": null,
+   "pred_method": "whole_vertebra_fallback",
+   "gt_method": "whole_vertebra_fallback"
+  },
+  "L3": {
+   "pred_body": [
+    -15.97,
+    -24.99,
+    -7.52
+   ],
+   "gt_body": [
+    0.95,
+    -59.26,
+    -264.22
+   ],
+   "gt_whole": [
+    0.95,
+    -59.26,
+    -264.22
+   ],
+   "verse_point": null,
+   "pred_method": "whole_vertebra_fallback",
+   "gt_method": "whole_vertebra_fallback"
+  },
+  "L4": {
+   "pred_body": [
+    -5.87,
+    -8.38,
+    -28.67
+   ],
+   "gt_body": null,
+   "gt_whole": null,
+   "verse_point": null,
+   "pred_method": "whole_vertebra_fallback",
+   "gt_method": null
+  },
+  "L5": {
+   "pred_body": [
+    -3.01,
+    -6.85,
+    -61.75
+   ],
+   "gt_body": null,
+   "gt_whole": null,
+   "verse_point": null,
+   "pred_method": "whole_vertebra_fallback",
+   "gt_method": null
+  }
+ },
+ "seconds": 19.0,
+ "model_spacing_mm": 1.0
+}

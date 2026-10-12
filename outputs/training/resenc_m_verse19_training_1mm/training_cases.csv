@@ -1,0 +1,81 @@
+case_id,dataset,split,subject_id,status,shape,labels,fixes,flags,use
+sub-verse004,verse,verse19training,sub-verse004,already_done,"[127, 176, 258]",L1 L2 L3 L4 L5 T12,,NONAXIAL LABEL_AFFINE_EPS,train
+sub-verse005,verse,verse19training,sub-verse005,already_done,"[154, 149, 234]",L1 L2 L3 L4 L5,,NONAXIAL,train
+sub-verse006,verse,verse19training,sub-verse006,already_done,"[169, 160, 140]",L4 L5,,NONAXIAL,validation
+sub-verse007,verse,verse19training,sub-verse007,written,"[134, 167, 211]",L1 L2 L3 T12,,NONAXIAL LABEL_AFFINE_EPS,train
+sub-verse008,verse,verse19training,sub-verse008,written,"[147, 155, 259]",L1 L2 L3 L4 L5 T12,,NONAXIAL LABEL_AFFINE_EPS,train
+sub-verse009,verse,verse19training,sub-verse009,written,"[131, 157, 247]",L1 L2 L3 L4 L5 T12,,NONAXIAL,train
+sub-verse014,verse,verse19training,sub-verse014,written,"[107, 161, 194]",L1 L2 L3 L4 L5,,NONAXIAL LABEL_AFFINE_EPS TRUNCATED,train
+sub-verse015,verse,verse19training,sub-verse015,written,"[158, 178, 233]",L1 L2 L3 L4 L5 T12,,NONAXIAL METAL LABEL_AFFINE_EPS,train
+sub-verse031,verse,verse19training,sub-verse031,written,"[159, 157, 215]",L1 L2 L3 L4 L5,,NONAXIAL LABEL_AFFINE_EPS,train
+sub-verse033,verse,verse19training,sub-verse033,written,"[160, 192, 271]",L1 L2 L3 L4 L5 T12,,NONAXIAL LABEL_AFFINE_EPS,train
+sub-verse034,verse,verse19training,sub-verse034,written,"[151, 146, 285]",L1 L2 L3 L4 L5 T12,,NONAXIAL,train
+sub-verse036,verse,verse19training,sub-verse036,written,"[167, 167, 201]",L2 L3 L4 L5,,NONAXIAL,train
+sub-verse043,verse,verse19training,sub-verse043,written,"[145, 158, 237]",L1 L2 L3 L4 L5 T12,,NONAXIAL,train
+sub-verse046,verse,verse19training,sub-verse046,written,"[123, 162, 204]",L1 L2 L3 L4 L5,,NONAXIAL LABEL_AFFINE_EPS TRUNCATED,train
+sub-verse048,verse,verse19training,sub-verse048,written,"[124, 148, 179]",L2 L3 L4 L5,,NONAXIAL LABEL_AFFINE_EPS,train
+sub-verse051,verse,verse19training,sub-verse051,written,"[156, 150, 253]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse056,verse,verse19training,sub-verse056,written,"[176, 165, 258]",L1 L2 L3 L4 L5 T12,,NONAXIAL LABEL_AFFINE_EPS,validation
+sub-verse060,verse,verse19training,sub-verse060,written,"[158, 175, 221]",L1 L2 L3 L4 L5 T12,,NONAXIAL LABEL_AFFINE_EPS,train
+sub-verse061,verse,verse19training,sub-verse061,written,"[180, 175, 285]",L1 L2 L3 L4 L5 T12,,NONAXIAL LABEL_AFFINE_EPS,validation
+sub-verse063,verse,verse19training,sub-verse063,written,"[164, 168, 234]",L1 L2 L3 L4 L5,,METAL,train
+sub-verse064,verse,verse19training,sub-verse064,written,"[89, 166, 272]",L1 L2 L3 L4 L5 T12,,NONAXIAL LABEL_AFFINE_EPS TRUNCATED,train
+sub-verse065,verse,verse19training,sub-verse065,written,"[180, 183, 182]",L2 L3 L4 L5,,NONAXIAL LABEL_AFFINE_EPS,train
+sub-verse068,verse,verse19training,sub-verse068,written,"[162, 178, 256]",L1 L2 L3 L4 L5 T12,,NONAXIAL LABEL_AFFINE_EPS,train
+sub-verse072,verse,verse19training,sub-verse072,written,"[153, 155, 253]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse074,verse,verse19training,sub-verse074,written,"[152, 165, 275]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse075,verse,verse19training,sub-verse075,written,"[146, 148, 188]",L1 L2 L3 T12,,,train
+sub-verse076,verse,verse19training,sub-verse076,written,"[149, 160, 208]",L1 L2 L3 L4 L5,,NONAXIAL LABEL_AFFINE_EPS,train
+sub-verse082,verse,verse19training,sub-verse082,written,"[176, 176, 279]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse088,verse,verse19training,sub-verse088,written,"[146, 157, 258]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse091,verse,verse19training,sub-verse091,written,"[162, 159, 249]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse096,verse,verse19training,sub-verse096,written,"[156, 163, 253]",L1 L2 L3 L4 L5 T12,,,validation
+sub-verse097,verse,verse19training,sub-verse097,written,"[180, 162, 250]",L1 L2 L3 L4 L5 T12,,METAL,train
+sub-verse100,verse,verse19training,sub-verse100,written,"[168, 170, 253]",L1 L2 L3 L4 T12,,,train
+sub-verse102,verse,verse19training,sub-verse102,written,"[159, 173, 222]",L1 L2 L3 L4 L5,,,train
+sub-verse104,verse,verse19training,sub-verse104,written,"[159, 162, 264]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse105,verse,verse19training,sub-verse105,skipped_no_spine,,,,NO_LUMBAR,excluded: skipped_no_spine
+sub-verse107,verse,verse19training,sub-verse107,written,"[160, 167, 236]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse111,verse,verse19training,sub-verse111,written,"[158, 169, 240]",L1 L2 L3 L4 L5 T12,,,validation
+sub-verse112,verse,verse19training,sub-verse112,written,"[149, 163, 235]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse113,verse,verse19training,sub-verse113,written,"[138, 147, 200]",L2 L3 L4 L5 L6,,TRANSITIONAL_L6,excluded: TRANSITIONAL_L6
+sub-verse122,verse,verse19training,sub-verse122,written,"[152, 145, 261]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse127,verse,verse19training,sub-verse127,written,"[166, 156, 259]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse133,verse,verse19training,sub-verse133,written,"[150, 148, 262]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse134,verse,verse19training,sub-verse134,written,"[152, 148, 195]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse135,verse,verse19training,sub-verse135,written,"[154, 152, 260]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse137,verse,verse19training,sub-verse137,written,"[161, 153, 222]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse139,verse,verse19training,sub-verse139,written,"[130, 143, 227]",L1 L2 L3 L4 L5,,NONAXIAL LABEL_AFFINE_EPS,train
+sub-verse141,verse,verse19training,sub-verse141,written,"[141, 165, 257]",L1 L2 L3 L4 L5 T12,,NONAXIAL LABEL_AFFINE_EPS,train
+sub-verse145,verse,verse19training,sub-verse145,written,"[170, 152, 257]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse146,verse,verse19training,sub-verse146,written,"[160, 145, 149]",L3 L4 L5,,METAL,train
+sub-verse151,verse,verse19training,sub-verse151,written,"[162, 164, 285]",L1 L2 L3 L4 L5 T12,,,validation
+sub-verse152,verse,verse19training,sub-verse152,written,"[149, 154, 236]",L1 L2 L3 L4 L5 T12,,,train
+sub-verse207,verse,verse19training,sub-verse207,skipped_no_spine,,,,NONAXIAL LABEL_AFFINE_EPS NO_LUMBAR,excluded: skipped_no_spine
+sub-verse254,verse,verse19training,sub-verse254,written,"[147, 169, 287]",L1 L2 L3 L4 L5 T12,,NONAXIAL LABEL_AFFINE_EPS,train
+sub-verse257,verse,verse19training,sub-verse257,written,"[121, 174, 299]",L1 L2 L3 L4 L5 T12,,NONAXIAL LABEL_AFFINE_EPS TRUNCATED,train
+sub-verse401_split-verse201,verse,verse19training,sub-verse401,skipped_no_spine,,,,NONAXIAL NO_LUMBAR SPLIT_SCAN,excluded: skipped_no_spine
+sub-verse401_split-verse253,verse,verse19training,sub-verse401,written,"[162, 165, 255]",L1 L2 L3 L4 L5 T12,,SPLIT_SCAN,train
+sub-verse402_split-verse202,verse,verse19training,sub-verse402,skipped_no_spine,,,,NONAXIAL NO_LUMBAR SPLIT_SCAN,excluded: skipped_no_spine
+sub-verse402_split-verse251,verse,verse19training,sub-verse402,written,"[177, 161, 300]",L1 L2 L3 L4 L5 T12,,NONAXIAL LABEL_AFFINE_EPS SPLIT_SCAN,train
+sub-verse403_split-verse208,verse,verse19training,sub-verse403,skipped_no_spine,,,,NONAXIAL LABEL_AFFINE_EPS NO_LUMBAR SPLIT_SCAN,excluded: skipped_no_spine
+sub-verse403_split-verse255,verse,verse19training,sub-verse403,written,"[165, 170, 297]",L1 L2 L3 L4 L5 T12 L6,,NONAXIAL TRANSITIONAL_L6 SPLIT_SCAN,excluded: TRANSITIONAL_L6
+sub-verse405_split-verse212,verse,verse19training,sub-verse405,skipped_no_spine,,,,NONAXIAL LABEL_AFFINE_EPS NO_LUMBAR SPLIT_SCAN,excluded: skipped_no_spine
+sub-verse405_split-verse258,verse,verse19training,sub-verse405,written,"[107, 132, 107]",T12,,NONAXIAL NO_LUMBAR SPLIT_SCAN,excluded: NO_LUMBAR
+sub-verse405_split-verse259,verse,verse19training,sub-verse405,written,"[155, 158, 237]",L1 L2 L3 L4 L5,,NONAXIAL SPLIT_SCAN,train
+sub-verse406_split-verse214,verse,verse19training,sub-verse406,skipped_no_spine,,,,NONAXIAL LABEL_AFFINE_EPS NO_LUMBAR SPLIT_SCAN,excluded: skipped_no_spine
+sub-verse406_split-verse261,verse,verse19training,sub-verse406,written,"[149, 181, 307]",L1 L2 L3 L4 L5 T12 L6,,NONAXIAL LABEL_AFFINE_EPS TRANSITIONAL_L6 SPLIT_SCAN,excluded: TRANSITIONAL_L6
+sub-verse407_split-verse215,verse,verse19training,sub-verse407,skipped_no_spine,,,,NONAXIAL LABEL_AFFINE_EPS NO_LUMBAR SPLIT_SCAN,excluded: skipped_no_spine
+sub-verse407_split-verse262,verse,verse19training,sub-verse407,written,"[121, 165, 264]",L1 L2 L3 L4 L5 T12,,NONAXIAL SPLIT_SCAN,train
+sub-verse408_split-verse223,verse,verse19training,sub-verse408,skipped_no_spine,,,,NO_LUMBAR SPLIT_SCAN,excluded: skipped_no_spine
+sub-verse408_split-verse265,verse,verse19training,sub-verse408,written,"[148, 154, 247]",L1 L2 L3 L4 L5 T12,,SPLIT_SCAN,train
+sub-verse409_split-verse226,verse,verse19training,sub-verse409,skipped_no_spine,,,,NO_LUMBAR SPLIT_SCAN,excluded: skipped_no_spine
+sub-verse409_split-verse266,verse,verse19training,sub-verse409,written,"[164, 167, 250]",L1 L2 L3 L4 L5 T12,,SPLIT_SCAN,train
+sub-verse410_split-verse227,verse,verse19training,sub-verse410,skipped_no_spine,,,,NO_LUMBAR SPLIT_SCAN,excluded: skipped_no_spine
+sub-verse410_split-verse267,verse,verse19training,sub-verse410,written,"[155, 160, 241]",L1 L2 L3 L4 L5 T12,,SPLIT_SCAN,train
+sub-verse411_split-verse232,verse,verse19training,sub-verse411,skipped_no_spine,,,,NO_LUMBAR SPLIT_SCAN,excluded: skipped_no_spine
+sub-verse411_split-verse270,verse,verse19training,sub-verse411,written,"[150, 150, 249]",L1 L2 L3 L4 L5 T12,,SPLIT_SCAN,train
+sub-verse413_split-verse239,verse,verse19training,sub-verse413,skipped_no_spine,,,,NO_LUMBAR SPLIT_SCAN,excluded: skipped_no_spine
+sub-verse413_split-verse272,verse,verse19training,sub-verse413,written,"[153, 146, 270]",L1 L2 L3 L4 L5 T12,,SPLIT_SCAN,train
+sub-verse415_split-verse243,verse,verse19training,sub-verse415,skipped_no_spine,,,,NONAXIAL LABEL_AFFINE_EPS NO_LUMBAR SPLIT_SCAN,excluded: skipped_no_spine
+sub-verse415_split-verse275,verse,verse19training,sub-verse415,written,"[157, 162, 284]",L1 L2 L3 L4 L5 T12,,NONAXIAL SPLIT_SCAN,train

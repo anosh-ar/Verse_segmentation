@@ -1,0 +1,115 @@
+{
+ "case_id": "s0673",
+ "source": "totalseg_v3_test",
+ "subject_id": "s0673",
+ "flags": "METAL MASK_OVERLAP TRUNCATED MULTI_CC",
+ "gt_has_L6": false,
+ "gt_has_T13": false,
+ "levels": {
+  "L4": {
+   "gt_ml": 17.39,
+   "pred_ml": 54.87,
+   "dice": 0.0,
+   "dice_if_pred_one_level_up": 0.0,
+   "dice_if_pred_one_level_down": 0.0,
+   "dice_ceiling": 1.0,
+   "truncated": true,
+   "fragment": false
+  },
+  "L5": {
+   "gt_ml": 63.65,
+   "pred_ml": 62.1,
+   "dice": 0.9123409737506039,
+   "dice_if_pred_one_level_up": 0.0,
+   "dice_if_pred_one_level_down": 0.0,
+   "dice_ceiling": 1.0,
+   "truncated": true,
+   "fragment": false
+  }
+ },
+ "false_positive_levels": [
+  "L1",
+  "L2",
+  "L3"
+ ],
+ "centroids": {
+  "L1": {
+   "pred_body": [
+    -67.89,
+    118.9,
+    -931.25
+   ],
+   "gt_body": null,
+   "gt_whole": null,
+   "verse_point": null,
+   "pred_method": "eroded_body",
+   "gt_method": null
+  },
+  "L2": {
+   "pred_body": [
+    86.26,
+    126.86,
+    -921.55
+   ],
+   "gt_body": null,
+   "gt_whole": null,
+   "verse_point": null,
+   "pred_method": "eroded_body",
+   "gt_method": null
+  },
+  "L3": {
+   "pred_body": [
+    85.17,
+    133.32,
+    -956.15
+   ],
+   "gt_body": null,
+   "gt_whole": null,
+   "verse_point": null,
+   "pred_method": "eroded_body",
+   "gt_method": null
+  },
+  "L4": {
+   "pred_body": [
+    111.54,
+    126.93,
+    -968.61
+   ],
+   "gt_body": [
+    4.57,
+    119.69,
+    -808.95
+   ],
+   "gt_whole": [
+    4.57,
+    119.69,
+    -808.95
+   ],
+   "verse_point": null,
+   "pred_method": "eroded_body",
+   "gt_method": "whole_vertebra_fallback"
+  },
+  "L5": {
+   "pred_body": [
+    4.99,
+    125.06,
+    -834.58
+   ],
+   "gt_body": [
+    4.99,
+    125.19,
+    -834.49
+   ],
+   "gt_whole": [
+    5.52,
+    114.46,
+    -831.06
+   ],
+   "verse_point": null,
+   "pred_method": "eroded_body",
+   "gt_method": "eroded_body"
+  }
+ },
+ "seconds": 21.2,
+ "model_spacing_mm": 1.0
+}

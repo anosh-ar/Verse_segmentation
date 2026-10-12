@@ -61,6 +61,14 @@ def output_folders(tag: str):
     return OUTPUTS_DIR / f"evaluation{suffix}", OUTPUTS_DIR / f"predictions{suffix}"
 
 
+def windows_per_gpu_batch(patch_size) -> int:
+    """How many sliding windows to predict at once. Only speed depends on it, never the
+    result. 4 windows of the 2 mm patch (96 x 96 x 160) fit a 24 GB GPU; bigger patches
+    get proportionally fewer (1 mm, 192 x 192 x 320: 1). Too many would overflow into
+    shared memory and make the GPU 25x slower."""
+    return max(1, int(4 * (96 * 96 * 160) / float(np.prod(patch_size))))
+
+
 def verse_annotated_points(case, img) -> dict:
     """VerSe centroid annotations in world RAS mm (convention verified in Part A)."""
     ctd = case.load_verse_centroids()
@@ -78,7 +86,8 @@ def verse_annotated_points(case, img) -> dict:
 def evaluate_case(case, source: str, net, ckpt, device, audit_row: dict, pred_dir) -> dict:
     t0 = time.time()
     img = case.load_ct()
-    res = predict_ct(net, img, ckpt["patch_size"], device, ckpt["spacing_mm"], batch_size=4)
+    res = predict_ct(net, img, ckpt["patch_size"], device, ckpt["spacing_mm"],
+                     batch_size=windows_per_gpu_batch(ckpt["patch_size"]))
     pred = res["label_original_grid"]
     gt, _ = merge_label_files_to_canonical(case, img)
     # resampling ceiling: ground truth -> model grid (voxel size of the checkpoint) -> back to the CT grid

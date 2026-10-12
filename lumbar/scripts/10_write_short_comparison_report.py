@@ -16,7 +16,8 @@ Needs
   outputs/evaluation_verse_1mm/, predictions_...        VerSe-trained model (step 6 here)
 
 Output
-  report/short_comparison_report.md
+  report/short_comparison_report.md   (the tables, followed by report/findings.md: the
+                                       hand-written interpretation, which re-runs never overwrite)
 
     python scripts/10_write_short_comparison_report.py
 """
@@ -79,6 +80,9 @@ def dice_table() -> list[str]:
         for model, (tag, mm, _) in MODELS.items():
             lv = pd.read_csv(OUTPUTS / f"evaluation_{tag}" / "dice_per_level.csv")
             d = lv[(lv["group"] == group) & ~lv["fragment"]]
+            if d.empty:
+                L.append(f"| {test_name} | {model} ({mm}) | " + " | ".join(["not evaluated yet"] + [""] * 7) + " |")
+                continue
             cell = lambda s: f"{s.mean():.2f} / {s.median():.2f}".replace("0.", ".")
             L.append(f"| {test_name} | {model} ({mm}) | "
                      + " | ".join(cell(d.loc[d["level"] == n, "dice"]) for n in TARGET_LEVELS)
@@ -91,8 +95,12 @@ def extra_numbers(tag: str) -> dict:
     lv = pd.read_csv(OUTPUTS / f"evaluation_{tag}" / "dice_per_level.csv")
     ct = pd.read_csv(OUTPUTS / f"evaluation_{tag}" / "centroid_distances.csv")
     out = {}
+    missing = {"miscounted": "not evaluated yet", "complete": None, "centre": "", "fp_cases": "", "fp_big": ""}
     for group in TEST_SETS:
         d = lv[(lv["group"] == group) & ~lv["fragment"]]
+        if d.empty:                  # this test set has not been evaluated (step 6 --source)
+            out[group] = dict(missing)
+            continue
         per_case = d.groupby("case_id")[["dice", "dice_if_pred_one_level_up", "dice_if_pred_one_level_down"]].mean()
         gain = per_case[["dice_if_pred_one_level_up", "dice_if_pred_one_level_down"]].max(axis=1) - per_case["dice"]
         c = ct[ct["group"] == group]["pred_body_to_gt_body_mm"].dropna()
@@ -105,6 +113,8 @@ def extra_numbers(tag: str) -> dict:
         if not r["false_positive_levels"]:
             continue
         group = next(g for g in TEST_SETS if g.startswith("TotalSeg" if r["source"].startswith("totalseg") else "VerSe"))
+        if out[group]["complete"] is None:   # cached cases of a test set that is not fully evaluated
+            continue
         img = nib.load(pred_dir / r["source"] / f"{r['case_id']}_predicted_labels.nii.gz")
         lab, voxel_ml = np.asarray(img.dataobj), float(abs(np.linalg.det(img.affine[:3, :3]))) / 1000
         out[group]["fp_cases"] += 1
@@ -129,13 +139,16 @@ def main():
     L += ["", "## Extra comparison numbers", "",
           "| | " + " | ".join(f"{m}, {t.split(' (')[0]}" for t in TEST_SETS.values() for m in MODELS) + " |",
           "|---|" + "---|" * (len(MODELS) * len(TEST_SETS))]
-    rows = [("Dice, complete vertebrae only (mean)", lambda e: f"{e['complete']:.3f}"),
+    rows = [("Dice, complete vertebrae only (mean)", lambda e: "" if e["complete"] is None else f"{e['complete']:.3f}"),
             ("Scans counted one level off", lambda e: str(e["miscounted"])),
             ("Scans with a false-positive level", lambda e: str(e["fp_cases"])),
             ("Whole-vertebra false positives (>= 20 ml)", lambda e: str(e["fp_big"])),
             ("Body centre vs ground-truth body, median / 90th pct (mm)", lambda e: e["centre"])]
     for text, get in rows:
         L.append(f"| {text} | " + " | ".join(get(extras[m][g]) for g in TEST_SETS for m in MODELS) + " |")
+    findings = REPORT.parent / "findings.md"   # hand-written interpretation, kept across re-runs
+    if findings.exists():
+        L += ["", findings.read_text(encoding="utf-8").strip()]
     REPORT.parent.mkdir(parents=True, exist_ok=True)
     REPORT.write_text("\n".join(L) + "\n", encoding="utf-8")
     print(f"[report] -> {REPORT}")
