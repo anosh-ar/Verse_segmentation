@@ -1,0 +1,5 @@
+# Normalise line endings; shell scripts must keep LF to run on Linux.
+* text=auto
+*.sh text eol=lf
+*.pdf binary
+lumbar/weights/*.pt filter=lfs diff=lfs merge=lfs -text
