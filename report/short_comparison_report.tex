@@ -1,0 +1,70 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[a4paper,margin=1.3cm,top=1.0cm,bottom=1.1cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{mathpazo}
+\usepackage[scaled=0.92]{helvet}
+\usepackage{microtype}
+\usepackage{booktabs,tabularx,array}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{caption}
+
+\titleformat{\section}{\sffamily\bfseries\normalsize\color{teal!55!black}}{\thesection}{0.5em}{}
+\titlespacing*{\section}{0pt}{5pt}{2pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\setlist{nosep,leftmargin=1.1em,topsep=1pt}
+\captionsetup{font=footnotesize,labelfont=bf,skip=2pt}
+\setlength{\textfloatsep}{6pt}
+\setlength{\floatsep}{5pt}
+\setlength{\intextsep}{5pt}
+\setlength{\tabcolsep}{4pt}
+\pagestyle{empty}
+
+\begin{document}
+\small
+
+{\sffamily\bfseries\Large Lumbar spine segmentation: training on VerSe instead of TotalSegmentator}
+
+\section{Setup}
+The pipeline, network (residual-encoder U-Net), loss, optimiser, 11\,000 training steps, checkpoint rule
+and test sets are those of the original project. Only the training data change, and with them the voxel size:
+\begin{itemize}
+\item \textbf{TotalSegmentator-trained} (original project): 902 TotalSegmentator v3 training scans, 1.5\,mm
+  voxels (the native TotalSegmentator size), batch 3.
+\item \textbf{VerSe-trained} (this project): the VerSe19 training set, 80 scans of 67 patients; 62 usable after
+  excluding 15 scans without a lumbar vertebra and 3 with an L6 (the network has no L6 class); 56 for training
+  and 6 for choosing the checkpoint, split by patient. Voxel size \textbf{1\,mm}: 39 of the 80 scans are
+  already 1\,mm isotropic, whereas at 1.5 or 2\,mm all 80 would be resampled. One 1\,mm patch
+  (192$\times$192$\times$320 voxels, the same 19.2$\times$19.2$\times$32\,cm) fills the 24\,GB GPU, so batch 1.
+\end{itemize}
+
+\input{comparison_tables.tex}
+
+\section{Findings}
+\begin{itemize}
+\item \textbf{On a typical VerSe scan both models segment equally well} (median Dice .93 vs .94), although
+  the VerSe-trained model saw only 56 training scans; at 1\,mm VerSe also loses nothing to resampling
+  (limit 1.00 vs .96).
+\item \textbf{On average the VerSe-trained model is clearly worse} (mean Dice .76 vs .91). The loss is in
+  \emph{naming}, not in outlining: 7 scans are counted one level off (TotalSegmentator-trained: 1), and L1
+  suffers most (mean .58 vs .90).
+\item \textbf{It labels neck and upper thoracic vertebrae as lumbar far more often}: 72 whole-vertebra false
+  positives against 26. Underneath them in the ground truth lie neck vertebrae C1--C7 in 32 cases
+  (TotalSegmentator-trained: 8), thoracic vertebrae in 13 (5), unlabelled bone in 21 (12) and real lumbar
+  vertebrae with the wrong level name in 6 (1). Many VerSe test scans show the whole spine. Both models were
+  trained on lumbar crops only (T12 to sacrum), but with 56 instead of 902 scans the VerSe-trained model has
+  learned far less well what is \emph{not} a lumbar vertebra. As the clean-up keeps only the largest piece per
+  class, a wrongly named neck vertebra can even replace the real L1.
+\item \textbf{Body centres}: the median distance is similar (0.9 vs 0.6\,mm), but the 90th percentile is
+  34\,mm against 4\,mm: the same naming errors put a ``body centre'' on the wrong vertebra.
+\item \textbf{Takeaway}: here, many training scans from another source beat few scans from the target source.
+  56 scans are not enough to learn level counting on whole-spine scans; more scans, training patches outside
+  the lumbar crop, or a rule-based level check would be the next steps.
+\end{itemize}
+\textit{The TotalSegmentator test set is not yet evaluated for the VerSe-trained model (60 of 109 scans done);
+its rows are filled in automatically once the evaluation is complete.}
+
+\end{document}
